@@ -7,28 +7,36 @@ function App() {
   
   const [searchTerm, setSearchTerm] = useState("");
 
+  const ifConsist = (currItem) => {
+    if (searchTerm == "") return currItem
+    else if (currItem.first_name.toLowerCase().startsWith(searchTerm.toLowerCase())) 
+      return currItem
+  }
+
+  const mapData = (currItem, index) => {
+    return (
+      <div key={index}>
+        <p>{currItem.first_name}</p>
+      </div>
+    )
+  }
+
 
   return (
     <div className="App">
-      <input type="text" placeholder="Search..." onChange={
-        event => {setSearchTerm(event.target.value)}
-      }/>
+      <input
+        type="text"
+        placeholder="Search..."
+        onChange={(event) => {
+          setSearchTerm((searchTerm) =>  (event.target.value));
+        }}
+      />
       {
-      JSONDATA.filter((val) => {
-        if (searchTerm == "") return val;
-        else if (val.first_name.toLowerCase().startsWith(searchTerm.toLowerCase())) {
-            return val
-        }
+        JSONDATA.filter(ifConsist).map(mapData)
       }
-      ).map((val, key) => {
-        return (
-          <div className="user" key={key}>
-            <p>{val.first_name}</p>
-          </div>
-        );
-      })}
     </div>
   );
 }
 
 export default App;
+
